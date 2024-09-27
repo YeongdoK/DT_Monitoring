@@ -12,16 +12,17 @@
 
 # 실행방법
 - - -
-1. cd samsung-shipyard-monitoring
+1) cd samsung-shipyard-monitoring
 
-  **npm run dev**를 통해 서버 실행
+**npm run dev**를 통해 서버 실행
 
-2. **새 터미널** 추가
+2) **새 터미널** 추가
 
-3. cd samsung-shipyard-monitoring
 
-  cd client
+3) cd samsung-shipyard-monitoring
 
-  cd src
+cd client
 
-  **npm start**를 통해 app.js 실행
+cd src
+
+**npm start**를 통해 app.js 실행
