@@ -89,6 +89,11 @@ app.use('/api/shipbuilding', shipbuildingRoutes);
 app.use('/api/dpbom-department', dpbomDepartmentRoutes);
 app.use('/api/defect-rate', defectRateRoutes);
 app.use('/api/chat', chatRoutes);
+// 루트 경로에 대한 처리 추가
+app.get('/', (req, res) => {
+  res.send('Welcome to the server! The server is running.');
+});
+
 
 // 로그 기록 미들웨어
 app.use((req, res, next) => {

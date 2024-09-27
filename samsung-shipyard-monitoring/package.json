@@ -5,7 +5,7 @@
   "scripts": {
     "create-admin": "node server/scripts/createAdmin.js",
     "start": "node server/index.js",
-    "dev": "set HTTPS=true && set SSL_CRT_FILE=./localhost+2.pem && set SSL_KEY_FILE=./localhost+2-key.pem && nodemon server/index.js",
+    "dev": "set HTTPS=true && set SSL_CRT_FILE=./localhost+2.pem && set SSL_KEY_FILE=./localhost+2-key.pem && nodemon --watch server/**/*.js --ignore server/scripts/shap_results.json server/index.js", 
     "client": "cd client && set HTTPS=true && set SSL_CRT_FILE=../localhost+2.pem && set SSL_KEY_FILE=../localhost+2-key.pem && npm start",
     "build": "cd client && GENERATE_SOURCEMAP=false npm run build",
     "test": "react-scripts test",

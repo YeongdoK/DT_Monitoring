@@ -3,9 +3,10 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+// Defect rate data 조회 함수
 exports.getDefectRateData = async (req, res) => {
   const { selectedMenu } = req.params;
-  
+
   try {
     const query = `
       SELECT 
@@ -36,78 +37,82 @@ exports.getDefectRateData = async (req, res) => {
   }
 };
 
-//-----------------------
+// 특정 프로젝트의 Defect data 조회 함수
 exports.getDefectDataForProject = async (req, res) => {
-    const { project_number } = req.params;
+  const { project_number } = req.params;
 
-    try {
-        const query = `
-            SELECT id, vessel_type_long, department_code, company_type, reason_details, welding_method
-            FROM welding_defect_rate
-            WHERE project_number = ? AND defect_length != 0
-        `;
+  try {
+    const query = `
+      SELECT id, vessel_type_long, department_code, company_type, reason_details, welding_method
+      FROM welding_defect_rate
+      WHERE project_number = ? AND defect_length != 0
+    `;
 
-        const [results] = await pool.query(query, [project_number]);
-        res.json(results);
-    } catch (error) {
-        console.error('Error fetching defect data:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
+    const [results] = await pool.query(query, [project_number]);
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching defect data:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
+// Defect data 업데이트 함수
 exports.updateDefectData = async (req, res) => {
-    const { id } = req.params;
-    const { vessel_type_long, department_code, company_type, reason_details, welding_method } = req.body;
+  const { id } = req.params;
+  const { vessel_type_long, department_code, company_type, reason_details, welding_method } = req.body;
 
-    try {
-        const query = `
-            UPDATE welding_defect_rate
-            SET vessel_type_long = ?, department_code = ?, company_type = ?, reason_details = ?, welding_method = ?
-            WHERE id = ?
-        `;
+  try {
+    const query = `
+      UPDATE welding_defect_rate
+      SET vessel_type_long = ?, department_code = ?, company_type = ?, reason_details = ?, welding_method = ?
+      WHERE id = ?
+    `;
 
-        await pool.query(query, [vessel_type_long, department_code, company_type, reason_details, welding_method, id]);
-        res.json({ message: 'Data updated successfully' });
-    } catch (error) {
-        console.error('Error updating defect data:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
+    await pool.query(query, [vessel_type_long, department_code, company_type, reason_details, welding_method, id]);
+    res.json({ message: 'Data updated successfully' });
+  } catch (error) {
+    console.error('Error updating defect data:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
+// Defect data 삭제 함수
 exports.deleteDefectData = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    try {
-        const query = `DELETE FROM welding_defect_rate WHERE id = ?`;
-        await pool.query(query, [id]);
-        res.json({ message: 'Data deleted successfully' });
-    } catch (error) {
-        console.error('Error deleting defect data:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
+  try {
+    const query = `DELETE FROM welding_defect_rate WHERE id = ?`;
+    await pool.query(query, [id]);
+    res.json({ message: 'Data deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting defect data:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
+// Defect data 추가 함수
 exports.addDefectData = async (req, res) => {
-    const { project_number, vessel_type_long, department_code, company_type, inspection_length, defect_length, inspection_method, inspection_id, reason_code, reason_details, welding_method } = req.body;
+  const { project_number, vessel_type_long, department_code, company_type, inspection_length, defect_length, inspection_method, inspection_id, reason_code, reason_details, welding_method } = req.body;
 
-    try {
-        const query = `
-            INSERT INTO welding_defect_rate (project_number, vessel_type_long, department_code, company_type, inspection_length, defect_length, inspection_method, inspection_id, reason_code, reason_details, welding_method)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+  try {
+    const query = `
+      INSERT INTO welding_defect_rate (project_number, vessel_type_long, department_code, company_type, inspection_length, defect_length, inspection_method, inspection_id, reason_code, reason_details, welding_method)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-        await pool.query(query, [project_number, vessel_type_long, department_code, company_type, inspection_length, defect_length, inspection_method, inspection_id, reason_code, reason_details, welding_method]);
-        res.json({ message: 'Data added successfully' });
-    } catch (error) {
-        console.error('Error adding defect data:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
+    await pool.query(query, [project_number, vessel_type_long, department_code, company_type, inspection_length, defect_length, inspection_method, inspection_id, reason_code, reason_details, welding_method]);
+    res.json({ message: 'Data added successfully' });
+  } catch (error) {
+    console.error('Error adding defect data:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
-//---------------------
+// SHAP 값 조회 함수
 exports.getShapValues = async (req, res) => {
-  // 아나콘다 가상환경의 Python 경로를 명시적으로 지정
-  const pythonPath = 'C:\\Users\\user\\.conda\\envs\\work\\python.exe';
+  const pythonPath = 'C:\\Users\\samsung\\anaconda3\\envs\\conda3121\\python.exe';  // Python 경로
+  console.log(`Executing Python script: ${pythonPath}`);
+
   exec(`${pythonPath} server/scripts/shap_analysis.py`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing Python script: ${error.message}`);
@@ -115,7 +120,9 @@ exports.getShapValues = async (req, res) => {
       return res.status(500).json({ message: 'Internal server error' });
     }
 
-    // SHAP 결과 파일 읽기
+    console.log('Python script executed successfully');
+    console.log('Reading SHAP results from JSON file');
+
     const shapResultsPath = path.join(__dirname, '..', 'scripts', 'shap_results.json');
     fs.readFile(shapResultsPath, 'utf8', (err, data) => {
       if (err) {
@@ -123,7 +130,7 @@ exports.getShapValues = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
       }
 
-      // 결과를 JSON으로 응답
+      console.log('Successfully read SHAP results');
       const shapData = JSON.parse(data);
       res.json(shapData);
     });

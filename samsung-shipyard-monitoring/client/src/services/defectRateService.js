@@ -59,7 +59,17 @@ export const getShapData = async () => {
         const response = await axios.get(`${API_URL}/defect-rate/blue-section/shap-analysis`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching SHAP data:', error);
+        if (error.response) {
+            // 서버로부터 응답이 왔을 때 오류 상태 및 데이터 로그 확인
+            console.error('Error response:', error.response.status, error.response.data);
+        } else if (error.request) {
+            // 요청은 전송되었지만 응답이 없을 때
+            console.error('No response received:', error.request);
+        } else {
+            // 요청을 설정하는 중에 발생한 오류
+            console.error('Error setting up request:', error.message);
+        }
         throw error;
     }
 };
+
