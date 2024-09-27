@@ -1,6 +1,5 @@
-alter table messages import tablespace;
-
-alter table messages discard tablespace;
+CREATE DATABASE samsung_shipyard;
+USE samsung_shipyard;
 
 CREATE TABLE users (
     id VARCHAR(8) NOT NULL PRIMARY KEY,
@@ -13,6 +12,10 @@ CREATE TABLE users (
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+alter table users discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table users import tablespace;
+
 CREATE TABLE friends (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(8) NOT NULL,      -- 친구를 추가한 사용자 ID (varchar(8)로 수정)
@@ -22,6 +25,9 @@ CREATE TABLE friends (
     FOREIGN KEY (friend_id) REFERENCES users(id)
 );
 
+alter table friends discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table friends import tablespace;
 
 CREATE TABLE IF NOT EXISTS messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,6 +38,10 @@ CREATE TABLE IF NOT EXISTS messages (
     FOREIGN KEY (sender_id) REFERENCES users(id),
     FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
+
+alter table messages discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table messages import tablespace;
 
 CREATE TABLE status_revised_drawing(
 	id INT,
@@ -45,6 +55,10 @@ CREATE TABLE status_revised_drawing(
     cause_code varchar(50),
     code_name varchar(50)
 );
+
+alter table status_revised_drawing discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table status_revised_drawing import tablespace;
 
 CREATE TABLE request_design_change(
 	registration_type varchar(50),
@@ -60,6 +74,10 @@ CREATE TABLE request_design_change(
     partner_code varchar(50)
 );
 
+alter table request_design_change discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table request_design_change import tablespace;
+
 CREATE TABLE status_structure_design(
 	id INT,
 	project_number varchar(50),
@@ -73,6 +91,10 @@ CREATE TABLE status_structure_design(
     release_completed_date DATE
 );
 
+alter table status_structure_design discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table status_structure_design import tablespace;
+
 CREATE TABLE status_outfitting_design(
 	id INT,
     dpbom_code varchar(100),
@@ -83,6 +105,10 @@ CREATE TABLE status_outfitting_design(
     release_planned_date DATE,
     release_completed_date DATE
 );
+
+alter table status_outfitting_design discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table status_outfitting_design import tablespace;
 
 CREATE TABLE welding_defect_rate(
 	project_number varchar(50),
@@ -111,6 +137,10 @@ CREATE TABLE welding_defect_rate(
 ALTER TABLE welding_defect_rate
 ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY FIRST;
 
+alter table welding_defect_rate discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table welding_defect_rate import tablespace;
+
 CREATE TABLE cargo_volume_data(
 	material_code varchar(50),
     material_name varchar(100),
@@ -122,12 +152,20 @@ CREATE TABLE cargo_volume_data(
     storage_time TIME
 );
 
+alter table cargo_volume_data discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table cargo_volume_data import tablespace;
+
 CREATE TABLE storage_capabilities_data(
 	storage_location varchar(50),
     material_code varchar(50),
     material_name varchar(100),
     maximum_storage_volume FLOAT
 );
+
+alter table storage_capabilities_data discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table storage_capabilities_data import tablespace;
 
 CREATE TABLE shipbuilding_process_data(
 	process_date DATETIME,
@@ -141,3 +179,7 @@ CREATE TABLE shipbuilding_process_data(
     downtime_hours INT,
     remarks_note TEXT
 );
+
+alter table shipbuilding_process_data discard tablespace;
+-- 주어진 samsung_shipyard의 ibd 삽입
+alter table shipbuilding_process_data import tablespace;
